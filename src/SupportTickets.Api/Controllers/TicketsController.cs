@@ -47,4 +47,17 @@ public class TicketsController : ControllerBase
         ticket.Priority = updatedTicket.Priority;
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public ActionResult DeleteTicket(int id)
+    {
+        var ticket = Tickets.FirstOrDefault(t => t.Id == id);
+
+        if(ticket == null)
+            return NotFound();
+
+        Tickets.Remove(ticket);
+
+        return NoContent();
+    }
 }
