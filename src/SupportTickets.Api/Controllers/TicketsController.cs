@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using SupportTickets.Api.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 [ApiController]
 [Route("api/[controller]")]
 
+[Authorize]
 public class TicketsController : ControllerBase
 {
     public static readonly List<Ticket> Tickets = new();
@@ -30,7 +33,7 @@ public class TicketsController : ControllerBase
         ticket.CreatedAt = DateTime.UtcNow;
 
         Tickets.Add(ticket);
-        return CreatedAtAction(nameof(GetTicketById), new {id = ticket.Id}, ticket);
+        return CreatedAtAction(nameof(GetTicketById), new { id = ticket.Id }, ticket);
     }
 
 
@@ -39,7 +42,7 @@ public class TicketsController : ControllerBase
     {
         var ticket = Tickets.FirstOrDefault(t => t.Id == id);
 
-        if(ticket == null)
+        if (ticket == null)
             return NotFound();
         ticket.Title = updatedTicket.Title;
         ticket.Description = updatedTicket.Description;
@@ -53,7 +56,7 @@ public class TicketsController : ControllerBase
     {
         var ticket = Tickets.FirstOrDefault(t => t.Id == id);
 
-        if(ticket == null)
+        if (ticket == null)
             return NotFound();
 
         Tickets.Remove(ticket);
